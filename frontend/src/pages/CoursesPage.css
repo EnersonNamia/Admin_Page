@@ -1,0 +1,10 @@
+/* Courses Page Styles */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #c8e6c9;
+  color: #2e7d32;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}

@@ -1,0 +1,180 @@
+{
+    "app": {
+        "name": "Admin Dashboard",
+        "version": "1.3.0",
+        "description": "Comprehensive admin panel for capstone project management",
+        "author": "Capstone Team",
+        "homepage": "./index.html"
+    },
+    "ui": {
+        "theme": {
+            "primaryColor": "#2563eb",
+            "secondaryColor": "#64748b",
+            "successColor": "#10b981",
+            "warningColor": "#f59e0b",
+            "dangerColor": "#ef4444",
+            "backgroundColor": "#f8fafc",
+            "surfaceColor": "#ffffff",
+            "borderRadius": "8px"
+        },
+        "sidebar": {
+            "defaultWidth": "280px",
+            "collapsedWidth": "80px",
+            "defaultCollapsed": false
+        },
+        "header": {
+            "height": "70px",
+            "showBreadcrumb": true,
+            "showSearch": true,
+            "showNotifications": true
+        },
+        "table": {
+            "defaultItemsPerPage": 10,
+            "pageSizes": [5, 10, 25, 50, 100],
+            "showSearch": true,
+            "showFilters": true
+        }
+    },
+    "features": {
+        "userManagement": {
+            "enabled": true,
+            "allowAdd": true,
+            "allowEdit": true,
+            "allowDelete": true,
+            "roles": ["admin", "moderator", "user"],
+            "statuses": ["active", "inactive", "banned"]
+        },
+        "contentManagement": {
+            "enabled": true,
+            "allowFileUpload": true,
+            "maxFileSize": "10MB",
+            "allowedFileTypes": ["jpg", "jpeg", "png", "gif", "pdf", "doc", "docx"]
+        },
+        "analytics": {
+            "enabled": true,
+            "defaultDateRange": 30,
+            "availableRanges": [7, 30, 90, 365],
+            "realTimeUpdates": false
+        },
+        "database": {
+            "enabled": true,
+            "allowBackup": true,
+            "allowRestore": true,
+            "autoBackup": true,
+            "backupInterval": "daily",
+            "maxBackups": 10
+        },
+        "reports": {
+            "enabled": true,
+            "exportFormats": ["pdf", "csv", "excel"],
+            "scheduledReports": true
+        }
+    },
+    "security": {
+        "twoFactorAuth": {
+            "enabled": true,
+            "required": false,
+            "methods": ["email", "sms", "app"]
+        },
+        "sessionTimeout": 30,
+        "maxLoginAttempts": 5,
+        "passwordPolicy": {
+            "minLength": 8,
+            "requireUppercase": true,
+            "requireLowercase": true,
+            "requireNumbers": true,
+            "requireSpecialChars": true
+        },
+        "loginNotifications": true,
+        "auditLog": true
+    },
+    "api": {
+        "baseUrl": "/api",
+        "version": "v1",
+        "timeout": 30000,
+        "retryAttempts": 3,
+        "endpoints": {
+            "auth": "/auth",
+            "users": "/users",
+            "content": "/content",
+            "analytics": "/analytics",
+            "database": "/database",
+            "reports": "/reports",
+            "settings": "/settings"
+        }
+    },
+    "notifications": {
+        "duration": 5000,
+        "maxVisible": 5,
+        "position": "top-right",
+        "types": {
+            "success": {
+                "icon": "fa-check-circle",
+                "color": "#10b981"
+            },
+            "error": {
+                "icon": "fa-exclamation-circle",
+                "color": "#ef4444"
+            },
+            "warning": {
+                "icon": "fa-exclamation-triangle",
+                "color": "#f59e0b"
+            },
+            "info": {
+                "icon": "fa-info-circle",
+                "color": "#2563eb"
+            }
+        }
+    },
+    "localization": {
+        "defaultLanguage": "en",
+        "availableLanguages": ["en", "es", "fr", "de"],
+        "dateFormat": "MM/DD/YYYY",
+        "timeFormat": "12h",
+        "timezone": "UTC"
+    },
+    "performance": {
+        "lazyLoading": true,
+        "virtualScrolling": false,
+        "cacheExpiry": 3600000,
+        "compressionEnabled": true,
+        "minimizeRequests": true
+    },
+    "backup": {
+        "enabled": true,
+        "schedule": "0 2 * * *",
+        "retention": {
+            "daily": 7,
+            "weekly": 4,
+            "monthly": 12
+        },
+        "compression": true,
+        "encryption": true
+    },
+    "monitoring": {
+        "errorTracking": true,
+        "performanceMonitoring": true,
+        "userAnalytics": true,
+        "systemHealth": true
+    },
+    "integrations": {
+        "email": {
+            "provider": "smtp",
+            "enabled": true
+        },
+        "storage": {
+            "provider": "local",
+            "enabled": true
+        },
+        "search": {
+            "provider": "native",
+            "enabled": true
+        }
+    },
+    "development": {
+        "debugMode": false,
+        "verboseLogging": false,
+        "mockData": true,
+        "hotReload": false
+    }
+}
