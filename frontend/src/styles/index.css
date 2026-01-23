@@ -111,6 +111,24 @@ body {
   background-color: #229954;
 }
 
+.btn-info {
+  background-color: #3498db;
+  color: var(--white);
+}
+
+.btn-info:hover {
+  background-color: #2980b9;
+}
+
+.btn-warning {
+  background-color: #f39c12;
+  color: var(--white);
+}
+
+.btn-warning:hover {
+  background-color: #e67e22;
+}
+
 .btn-danger {
   background-color: var(--danger-color);
   color: var(--white);
@@ -331,6 +349,10 @@ tbody tr:hover {
   width: 90%;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-color);
+}
+
+.modal-lg {
+  max-width: 800px;
 }
 
 .modal-header {

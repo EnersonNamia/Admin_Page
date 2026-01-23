@@ -13,6 +13,7 @@ function Navigation({ admin, onLogout }) {
     { path: '/users', label: 'Users', icon: 'fas fa-users' },
     { path: '/courses', label: 'Courses', icon: 'fas fa-book' },
     { path: '/tests', label: 'Tests', icon: 'fas fa-clipboard-check' },
+    { path: '/questions', label: 'Questions', icon: 'fas fa-question-circle' },
     { path: '/recommendations', label: 'Recommendations', icon: 'fas fa-lightbulb' },
     { path: '/analytics', label: 'Analytics', icon: 'fas fa-analytics' },
   ];

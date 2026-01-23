@@ -16,7 +16,7 @@ function RecommendationsPage() {
     try {
       setLoading(true);
       const response = await axios.get(`${API_BASE_URL}/recommendations`);
-      setRecommendations(response.data.rows || []);
+      setRecommendations(response.data.recommendations || []);
     } catch (err) {
       setError('Failed to load recommendations');
     } finally {

@@ -46,7 +46,11 @@ async def get_users(
             email, 
             academic_info->>'strand' as strand,
             CAST(academic_info->>'gwa' AS DECIMAL(5,2)) as gwa,
-            created_at 
+            created_at,
+            is_active,
+            last_login,
+            (SELECT COUNT(*) FROM user_test_attempts WHERE user_id = users.user_id) as tests_taken,
+            (SELECT MAX(attempt_date) FROM user_test_attempts WHERE user_id = users.user_id) as last_test_date
         FROM users WHERE 1=1"""
         
         count_query = "SELECT COUNT(*) as total FROM users WHERE 1=1"
@@ -281,3 +285,61 @@ async def get_user_stats():
         }
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Failed to fetch statistics: {str(error)}")
+# Get user test history
+@router.get("/{user_id}/test-history")
+async def get_user_test_history(user_id: int):
+    try:
+        # Check if user exists
+        user = execute_query_one('SELECT user_id FROM users WHERE user_id = $1', [user_id])
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        test_history = execute_query("""
+            SELECT 
+                uta.attempt_id,
+                uta.test_id,
+                t.test_name,
+                t.description,
+                uta.score,
+                uta.total_questions,
+                ROUND((uta.score::float / uta.total_questions * 100)::numeric, 2) as percentage,
+                uta.attempt_date,
+                uta.time_taken
+            FROM user_test_attempts uta
+            JOIN tests t ON uta.test_id = t.test_id
+            WHERE uta.user_id = $1
+            ORDER BY uta.attempt_date DESC
+        """, [user_id])
+        
+        return {
+            "test_history": test_history or [],
+            "total_tests_taken": len(test_history) if test_history else 0
+        }
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch test history: {str(error)}")
+
+# Deactivate/Activate user account
+@router.patch("/{user_id}/status")
+async def update_user_status(user_id: int, status: Dict[str, Any]):
+    try:
+        is_active = status.get('is_active', False)
+        
+        # Check if user exists
+        user = execute_query_one('SELECT user_id FROM users WHERE user_id = $1', [user_id])
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        execute_query(
+            'UPDATE users SET is_active = $1 WHERE user_id = $2',
+            [is_active, user_id],
+            fetch=False
+        )
+        
+        status_text = "activated" if is_active else "deactivated"
+        return {"message": f"User {status_text} successfully"}
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Failed to update user status: {str(error)}")

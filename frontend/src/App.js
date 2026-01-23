@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import UsersPage from './pages/UsersPage';
 import CoursesPage from './pages/CoursesPage';
 import TestsPage from './pages/TestsPage';
+import QuestionsPage from './pages/QuestionsPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 
@@ -78,6 +79,7 @@ function App() {
               <Route path="/users" element={<UsersPage />} />
               <Route path="/courses" element={<CoursesPage />} />
               <Route path="/tests" element={<TestsPage />} />
+              <Route path="/questions" element={<QuestionsPage />} />
               <Route path="/recommendations" element={<RecommendationsPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="*" element={<Navigate to="/" />} />

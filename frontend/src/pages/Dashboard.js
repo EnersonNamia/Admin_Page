@@ -22,17 +22,17 @@ function Dashboard() {
     try {
       setLoading(true);
       const [users, courses, tests, recs] = await Promise.all([
-        axios.get(`${API_BASE_URL}/users`).catch(() => ({ data: { rows: [] } })),
-        axios.get(`${API_BASE_URL}/courses`).catch(() => ({ data: { rows: [] } })),
-        axios.get(`${API_BASE_URL}/tests`).catch(() => ({ data: { rows: [] } })),
-        axios.get(`${API_BASE_URL}/recommendations`).catch(() => ({ data: { rows: [] } })),
+        axios.get(`${API_BASE_URL}/users?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
+        axios.get(`${API_BASE_URL}/courses?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
+        axios.get(`${API_BASE_URL}/tests?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
+        axios.get(`${API_BASE_URL}/recommendations?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
       ]);
 
       setStats({
-        totalUsers: users.data?.rows?.length || 0,
-        totalCourses: courses.data?.rows?.length || 0,
-        totalTests: tests.data?.rows?.length || 0,
-        totalRecommendations: recs.data?.rows?.length || 0,
+        totalUsers: users.data?.pagination?.total || 0,
+        totalCourses: courses.data?.pagination?.total || 0,
+        totalTests: tests.data?.pagination?.total || 0,
+        totalRecommendations: recs.data?.pagination?.total || 0,
       });
     } catch (err) {
       setError('Failed to load statistics');

@@ -1,6 +1,7 @@
 /* Users Page Styles */
 .search-input,
-.strand-select {
+.strand-select,
+.status-select {
   flex: 1;
   min-width: 200px;
 }
@@ -48,5 +49,121 @@
 }
 
 .close-btn:hover {
-  color: #2c3e50;
+  color: #e74c3c;
 }
+
+/* Detail Modal Styles */
+.modal-lg {
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detail-item .label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-item .value {
+  font-size: 14px;
+  color: #333;
+}
+
+.test-history {
+  border-top: 2px solid #f0f0f0;
+  padding-top: 20px;
+}
+
+.test-history h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.history-table {
+  overflow-x: auto;
+}
+
+.history-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.history-table thead {
+  background: #f9f9f9;
+}
+
+.history-table th {
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #ddd;
+}
+
+.history-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.percentage {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.percentage.good {
+  background: #d4edda;
+  color: #155724;
+}
+
+.percentage.fair {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.percentage.poor {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.empty-text {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-sm {
+  font-size: 12px;
+  color: #666;
+}
+
+@media (max-width: 600px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

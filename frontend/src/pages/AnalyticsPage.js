@@ -20,17 +20,17 @@ function AnalyticsPage() {
     try {
       setLoading(true);
       const [users, courses, tests, recs] = await Promise.all([
-        axios.get(`${API_BASE_URL}/users`).catch(() => ({ data: { rows: [] } })),
-        axios.get(`${API_BASE_URL}/courses`).catch(() => ({ data: { rows: [] } })),
-        axios.get(`${API_BASE_URL}/tests`).catch(() => ({ data: { rows: [] } })),
-        axios.get(`${API_BASE_URL}/recommendations`).catch(() => ({ data: { rows: [] } })),
+        axios.get(`${API_BASE_URL}/users?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
+        axios.get(`${API_BASE_URL}/courses?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
+        axios.get(`${API_BASE_URL}/tests?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
+        axios.get(`${API_BASE_URL}/recommendations?limit=1`).catch(() => ({ data: { pagination: { total: 0 } } })),
       ]);
 
       setAnalytics({
-        users: users.data?.rows?.length || 0,
-        courses: courses.data?.rows?.length || 0,
-        tests: tests.data?.rows?.length || 0,
-        recommendations: recs.data?.rows?.length || 0,
+        users: users.data?.pagination?.total || 0,
+        courses: courses.data?.pagination?.total || 0,
+        tests: tests.data?.pagination?.total || 0,
+        recommendations: recs.data?.pagination?.total || 0,
       });
     } finally {
       setLoading(false);

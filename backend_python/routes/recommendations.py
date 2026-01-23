@@ -9,7 +9,6 @@ router = APIRouter(prefix="/api/recommendations", tags=["recommendations"])
 async def get_recommendations(
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1, le=100),
-    status: str = Query(""),
     user_id: str = Query(""),
     course_id: str = Query("")
 ):
@@ -18,7 +17,12 @@ async def get_recommendations(
         
         query = """
             SELECT 
-                r.*,
+                r.recommendation_id,
+                r.attempt_id,
+                r.user_id,
+                r.course_id,
+                r.reasoning,
+                r.recommended_at,
                 CONCAT(u.first_name, ' ', u.last_name) as user_name,
                 u.email as user_email,
                 c.course_name
@@ -31,14 +35,6 @@ async def get_recommendations(
         params = []
         count_params = []
         param_index = 1
-        
-        # Add status filter
-        if status:
-            query += f" AND r.status = ${param_index}"
-            count_query += f" AND status = ${param_index}"
-            params.append(status)
-            count_params.append(status)
-            param_index += 1
         
         # Add user filter
         if user_id:
@@ -61,15 +57,15 @@ async def get_recommendations(
         
         recommendations = execute_query(query, params)
         count_result = execute_query_one(count_query, count_params)
-        total = int(count_result['total'])
+        total = int(count_result['total']) if count_result else 0
         
         return {
-            "recommendations": recommendations,
+            "recommendations": recommendations or [],
             "pagination": {
                 "page": page,
                 "limit": limit,
                 "total": total,
-                "pages": math.ceil(total / limit)
+                "pages": math.ceil(total / limit) if total > 0 else 1
             }
         }
     except Exception as error:

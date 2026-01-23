@@ -18,7 +18,7 @@ function TestsPage() {
     try {
       setLoading(true);
       const response = await axios.get(`${API_BASE_URL}/tests`);
-      setTests(response.data.rows || []);
+      setTests(response.data.tests || []);
     } catch (err) {
       setError('Failed to load tests');
     } finally {
