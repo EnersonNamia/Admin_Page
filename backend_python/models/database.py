@@ -82,6 +82,11 @@ def execute_query_one(query, params=None):
             import re
             query = re.sub(r'\$\d+', '%s', query)
         cursor.execute(query, params or ())
+        
+        # Commit for INSERT, UPDATE, DELETE statements
+        if any(keyword in query.upper() for keyword in ['INSERT', 'UPDATE', 'DELETE']):
+            conn.commit()
+        
         result = cursor.fetchone()
         cursor.close()
         return result

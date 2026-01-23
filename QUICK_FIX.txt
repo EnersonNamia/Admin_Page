@@ -1,0 +1,87 @@
+# Quick Fix - Copy & Paste Solution
+
+## 🎯 One-Line Summary
+Change `http://localhost:8000/feedback/submit` to `http://localhost:5000/api/feedback/submit`
+
+---
+
+## 📝 Code Change
+
+**In your FeedbackForm.js file**, in the `handleSubmit` function, change:
+
+### FROM (Current - Broken) ❌
+```javascript
+const endpoint = '/feedback/submit';
+
+// ... code ...
+
+const response = await fetch(`http://localhost:8000${endpoint}`, {
+```
+
+### TO (Fixed - Working) ✅
+```javascript
+const backendUrl = 'http://localhost:5000/api/feedback/submit';
+
+// ... code ...
+
+const response = await fetch(backendUrl, {
+```
+
+---
+
+## 📍 Exact Location in File
+
+**Find line number ~28** where you see:
+```javascript
+const endpoint = '/feedback/submit';
+```
+
+**Replace with:**
+```javascript
+const backendUrl = 'http://localhost:5000/api/feedback/submit';
+```
+
+**Find line number ~45** where you see:
+```javascript
+const response = await fetch(`http://localhost:8000${endpoint}`, {
+```
+
+**Replace with:**
+```javascript
+const response = await fetch(backendUrl, {
+```
+
+---
+
+## ✅ That's It!
+
+After these 2 changes:
+1. Backup your file
+2. Make the changes above
+3. Save file
+4. Test feedback submission
+5. Should now work! 🎉
+
+---
+
+## 🧪 Test It
+
+1. Go to student app
+2. Click "Rate Recommendation"
+3. Submit feedback
+4. Check console (F12)
+5. Should see: `Response status: 200` ✅
+
+---
+
+## 📦 Alternative: Use Corrected File
+
+**If easier**, use the corrected version:
+- File: `FEEDBACK_FORM_CORRECTED.jsx`
+- Copy entire content
+- Paste into your `FeedbackForm.js`
+- Save
+
+---
+
+**That's all!** Let me know if you need help!

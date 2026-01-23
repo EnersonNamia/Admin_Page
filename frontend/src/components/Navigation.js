@@ -15,6 +15,7 @@ function Navigation({ admin, onLogout }) {
     { path: '/tests', label: 'Tests', icon: 'fas fa-clipboard-check' },
     { path: '/questions', label: 'Questions', icon: 'fas fa-question-circle' },
     { path: '/recommendations', label: 'Recommendations', icon: 'fas fa-lightbulb' },
+    { path: '/feedback', label: 'Feedback', icon: 'fas fa-comments' },
     { path: '/analytics', label: 'Analytics', icon: 'fas fa-analytics' },
   ];
 

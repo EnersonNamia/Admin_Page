@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 from models.database import get_db_pool, test_connection, close_all_connections
-from routes import users, courses, tests, recommendations, analytics
+from routes import users, courses, tests, recommendations, analytics, feedback
 
 # Load environment variables
 load_dotenv()
@@ -31,6 +31,7 @@ app.include_router(courses.router)
 app.include_router(tests.router)
 app.include_router(recommendations.router)
 app.include_router(analytics.router)
+app.include_router(feedback.router)
 
 # Startup event
 @app.on_event("startup")
