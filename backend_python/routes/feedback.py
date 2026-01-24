@@ -132,7 +132,7 @@ async def get_feedback(
             query += f" AND (rf.feedback_text ILIKE ${param_index} OR COALESCE(CONCAT(u.first_name, ' ', u.last_name), '') ILIKE ${param_index + 1})"
             count_query += f" AND (feedback_text ILIKE ${param_index})"
             params.extend([search_param, search_param])
-            count_params.extend([search_param])
+            count_params.append(search_param)
             param_index += 2
         
         query += f" ORDER BY rf.created_at DESC LIMIT ${param_index} OFFSET ${param_index + 1}"
@@ -166,12 +166,12 @@ async def get_feedback_detail(feedback_id: int):
                 rf.rating,
                 rf.feedback_text,
                 rf.created_at,
-                CONCAT(u.first_name, ' ', u.last_name) as user_name,
+                COALESCE(CONCAT(u.first_name, ' ', u.last_name), 'Anonymous') as user_name,
                 u.email as user_email,
                 c.course_name,
                 r.reasoning as recommendation_reasoning
             FROM recommendation_feedback rf
-            JOIN users u ON rf.user_id = u.user_id
+            LEFT JOIN users u ON rf.user_id = u.user_id
             LEFT JOIN recommendations r ON rf.recommendation_id = r.recommendation_id
             LEFT JOIN courses c ON r.course_id = c.course_id
             WHERE rf.feedback_id = $1
