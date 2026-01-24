@@ -95,17 +95,17 @@ async def get_feedback(
                 rf.rating,
                 rf.feedback_text,
                 rf.created_at,
-                CONCAT(u.first_name, ' ', u.last_name) as user_name,
+                COALESCE(CONCAT(u.first_name, ' ', u.last_name), 'Anonymous') as user_name,
                 u.email as user_email,
                 c.course_name,
                 r.reasoning as recommendation_reasoning
             FROM recommendation_feedback rf
-            JOIN users u ON rf.user_id = u.user_id
+            LEFT JOIN users u ON rf.user_id = u.user_id
             LEFT JOIN recommendations r ON rf.recommendation_id = r.recommendation_id
             LEFT JOIN courses c ON r.course_id = c.course_id
             WHERE 1=1
         """
-        count_query = 'SELECT COUNT(*) as total FROM recommendation_feedback rf JOIN users u ON rf.user_id = u.user_id WHERE 1=1'
+        count_query = 'SELECT COUNT(*) as total FROM recommendation_feedback rf WHERE 1=1'
         params = []
         count_params = []
         param_index = 1
@@ -129,10 +129,10 @@ async def get_feedback(
         # Add search in feedback text and user name
         if search:
             search_param = f"%{search}%"
-            query += f" AND (rf.feedback_text ILIKE ${param_index} OR u.first_name ILIKE ${param_index + 1} OR u.last_name ILIKE ${param_index + 1})"
-            count_query += f" AND (feedback_text ILIKE ${param_index} OR user_id IN (SELECT user_id FROM users WHERE CONCAT(first_name, ' ', last_name) ILIKE ${param_index + 1}))"
+            query += f" AND (rf.feedback_text ILIKE ${param_index} OR COALESCE(CONCAT(u.first_name, ' ', u.last_name), '') ILIKE ${param_index + 1})"
+            count_query += f" AND (feedback_text ILIKE ${param_index})"
             params.extend([search_param, search_param])
-            count_params.extend([search_param, search_param])
+            count_params.extend([search_param])
             param_index += 2
         
         query += f" ORDER BY rf.created_at DESC LIMIT ${param_index} OFFSET ${param_index + 1}"
