@@ -119,8 +119,29 @@ function UsersPage() {
 
   const getInactivityDays = (lastActive) => {
     if (!lastActive) return 'Never';
-    const days = Math.floor((Date.now() - new Date(lastActive)) / (1000 * 60 * 60 * 24));
-    return days === 0 ? 'Today' : `${days} days ago`;
+    const lastActiveDate = new Date(lastActive);
+    const now = new Date();
+    const diffMs = now - lastActiveDate;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 60) {
+      return diffMins === 0 ? 'Just now' : `${diffMins} min ago`;
+    } else if (diffHours < 24) {
+      return `${diffHours}h ago`;
+    } else {
+      return diffDays === 0 ? 'Today' : `${diffDays}d ago`;
+    }
+  };
+
+  const getOnlineStatus = (lastActive) => {
+    if (!lastActive) return 'Offline';
+    const lastActiveDate = new Date(lastActive);
+    const now = new Date();
+    const diffMins = Math.floor((now - lastActiveDate) / (1000 * 60));
+    // Online if logged in within last 30 minutes
+    return diffMins < 30 ? 'Online' : 'Offline';
   };
 
   return (
@@ -205,8 +226,8 @@ function UsersPage() {
                   <td className="text-center">{user.tests_taken || 0}</td>
                   <td className="text-sm">{getInactivityDays(user.last_login)}</td>
                   <td>
-                    <span className={`status ${user.is_active ? 'active' : 'inactive'}`}>
-                      {user.is_active ? 'Active' : 'Inactive'}
+                    <span className={`status ${getOnlineStatus(user.last_login) === 'Online' ? 'active' : 'inactive'}`}>
+                      {getOnlineStatus(user.last_login)}
                     </span>
                   </td>
                   <td className="actions">
@@ -272,6 +293,12 @@ function UsersPage() {
                 <div className="detail-item">
                   <span className="label">Last Login:</span>
                   <span className="value">{selectedUser.last_login ? formatDate(selectedUser.last_login) : 'Never'}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="label">Online Status:</span>
+                  <span className={`status ${getOnlineStatus(selectedUser.last_login) === 'Online' ? 'active' : 'inactive'}`}>
+                    {getOnlineStatus(selectedUser.last_login)}
+                  </span>
                 </div>
                 <div className="detail-item">
                   <span className="label">Account Status:</span>

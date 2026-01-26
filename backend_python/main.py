@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 from models.database import get_db_pool, test_connection, close_all_connections
-from routes import users, courses, tests, recommendations, analytics, feedback
+from routes import users, courses, tests, recommendations, analytics, feedback, auth
 
 # Load environment variables
 load_dotenv()
@@ -26,6 +26,7 @@ app.add_middleware(
 )
 
 # Include routers
+app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(courses.router)
 app.include_router(tests.router)

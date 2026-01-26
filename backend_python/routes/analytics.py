@@ -65,7 +65,12 @@ async def get_admin_analytics_overview():
     """
     try:
         total_users = execute_query_one('SELECT COUNT(*) as count FROM users')
-        total_assessments = execute_query_one('SELECT COUNT(*) as count FROM user_test_attempts')
+        # Only count adaptive test attempts for total assessments
+        total_assessments = execute_query_one("""
+            SELECT COUNT(*) as count FROM user_test_attempts uta
+            JOIN tests t ON uta.test_id = t.test_id
+            WHERE t.test_type = 'adaptive'
+        """)
         total_recommendations = execute_query_one('SELECT COUNT(*) as count FROM recommendations')
         
         # Get assessment breakdown by type
